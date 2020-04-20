@@ -1,5 +1,5 @@
 # Huffman Compression Assignment Readme
-###TODO LIST
+### TODO LIST
 - [ ] HuffmanTrie class
     - [ ] Insert (if not present insert into trie, if present return null)
     - [ ] Encode
