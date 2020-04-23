@@ -2,7 +2,7 @@
 ### TODO LIST
 - [ ] HuffmanTrie class (Gerard)
     - [ ] Insert (if not present insert into trie, if present return null)
-    - [ ] Encode
+    - [ ] Encode (Takes in file)
     - [ ] Decode
 - [ ] HuffmanAlgorithm class (Lukas)
     - [ ] Take file input from command line
