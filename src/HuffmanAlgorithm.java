@@ -1,4 +1,5 @@
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -29,21 +30,31 @@ public class HuffmanAlgorithm {
             return this.frequency - node.frequency;
         }
     }
-    Node root;
     private SortedMap<Integer,Character> frequencyMap = new TreeMap<Integer, Character>();
-    public void encode(int[] priorityArray){
+
+    public static void main(String[] args) {
+        HuffmanAlgorithm Huffman = new HuffmanAlgorithm();
+        Huffman.encode(Huffman.createTree(), " ");
+    }
+    public void encode(Node root, String s) {
+        if(root.leftChild == null && root.rightChild == null && Character.isLetter(root.data)){ //Base case = is leaf node
+            System.out.println(root.data + ":" + s); //Print final product
+            return;
+        }
+        encode(root.leftChild,s+0);
+        encode(root.rightChild, s+1);
     }
 
     /** Creates a huffman binary tree based on frequencyMap
      * @author Gerard Colman - 18327576
-     * @return root Returns root of the huffman encoding tree
+     * @return root Returns root of the huffman encoding tree+
      */
     public Node createTree(){
         SortedMap<Integer, Node> PQ = new TreeMap<Integer, Node>();
         /* REMINDERS
         * Gerard when frequency map is made remove casts
          */
-        while(!frequencyMap.isEmpty()){ //Putting characters from frequencyMap into a node and storing those nodes in
+        while(!frequencyMap.isEmpty()){ //Putting characters from frequencyMap into a node and storing those nodes in another sorted map
             Integer key = frequencyMap.firstKey(); //Key = frequency, firstKey gets lowest key
             Character data = frequencyMap.get(key);
             Node node = new Node(data, key, null,null);
