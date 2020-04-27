@@ -34,15 +34,28 @@ public class HuffmanAlgorithm {
 
     public static void main(String[] args) {
         HuffmanAlgorithm Huffman = new HuffmanAlgorithm();
-        Huffman.encode(Huffman.createTree(), " ");
+        //Huffman.encode(Huffman.createTree(), " ");
     }
-    public void encode(Node root, String s) {
-        if(root.leftChild == null && root.rightChild == null && Character.isLetter(root.data)){ //Base case = is leaf node
-            System.out.println(root.data + ":" + s); //Print final product
-            return;
+    public void encode() {
+        String input = BinaryStdIn.readString();
+        char[] in = input.toCharArray();
+        //Get frequencys - Lukas
+        Node root = createTree(); //Build tree
+        String[] codewordTable = new String[256]; //Build Codeword table, 256 = size of extended ascii
+        buildCodeTable(codewordTable,root,"");
+        writeTree(root);
+        for(int i =0;i<input.length();i++){ //encoding input
+            String code = codewordTable[in[i]]; //Gets code for letter
+            for(int j = 0;j<code.length();j++){
+                if(code.charAt(j) == '0'){
+                    BinaryStdOut.write(false);
+                }
+                if(code.charAt(j) == '1'){
+                    BinaryStdOut.write(true);
+                }
+            }
         }
-        encode(root.leftChild,s+0);
-        encode(root.rightChild, s+1);
+        BinaryStdOut.close();
     }
 
     /** Creates a huffman binary tree based on frequencyMap
@@ -50,10 +63,7 @@ public class HuffmanAlgorithm {
      * @return root Returns root of the huffman encoding tree+
      */
     public Node createTree(){
-        SortedMap<Integer, Node> PQ = new TreeMap<Integer, Node>();
-        /* REMINDERS
-        * Gerard when frequency map is made remove casts
-         */
+        SortedMap<Integer, Node> PQ = new TreeMap<Integer, Node>(); //Sorted map to store nodes
         while(!frequencyMap.isEmpty()){ //Putting characters from frequencyMap into a node and storing those nodes in another sorted map
             Integer key = frequencyMap.firstKey(); //Key = frequency, firstKey gets lowest key
             Character data = frequencyMap.get(key);
@@ -74,5 +84,23 @@ public class HuffmanAlgorithm {
             PQ.put(combinedFreq, parentNode);
         }
         return PQ.get(PQ.lastKey()); //Returns root of tree
+    }
+    private void buildCodeTable(String[] st, Node node, String n){
+        if(!node.isLeaf()){
+            buildCodeTable(st,node.leftChild, n+'0');
+            buildCodeTable(st,node.rightChild, n+'1');
+        }else{
+            st[node.data] = n;
+        }
+    }
+    private void writeTree(Node root){
+        if(root.isLeaf()){ //Base Case
+            BinaryStdOut.write(true);
+            BinaryStdOut.write(root.data,8);
+            return;
+        }
+        BinaryStdOut.write(false);
+        writeTree(root.leftChild);
+        writeTree(root.rightChild);
     }
 }

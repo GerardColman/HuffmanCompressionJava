@@ -1,8 +1,10 @@
 # Huffman Compression Assignment Readme
 ### TODO LIST
 - [ ] HuffmanTrie class (Gerard)
-    - [ ] Insert (if not present insert into trie, if present return null)
+    - [x] Create tree
     - [ ] Encode (Takes in file)
+        - [x] Build codeword table
+        - [x] Write trie
     - [ ] Decode
 - [ ] HuffmanAlgorithm class (Lukas)
     - [ ] Take file input from command line
