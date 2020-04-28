@@ -32,9 +32,7 @@ public class HuffmanAlgorithm {
         }
     }
     private SortedMap<Integer,Character> frequencyMap = new TreeMap<Integer, Character>();
-    public HuffmanAlgorithm(){
-
-    SortedMap<Integer,Character> frequencyMap = new TreeMap<>();
+    public HuffmanAlgorithm(){ }
 
     public SortedMap<Integer, Character> createFrequencyTable(File file) throws FileNotFoundException {
         try {
@@ -82,7 +80,7 @@ public class HuffmanAlgorithm {
         //Huffman.encode(Huffman.createTree(), " ");
     }
 
-    public void encode() { //Takes in name of output file
+    public void encode(){ //Takes in name of output file
         /*Getting File input*/
         String input = BinaryStdIn.readString();
         char[] in = input.toCharArray();
