@@ -43,7 +43,7 @@ public class HuffmanAlgorithm {
             Scanner in = new Scanner(file);
             String inputWord = "";
 
-            int[][] frequencyArray = new int[26][1];
+            int[][] frequencyArray = new int[27][1];
 
             while(in.hasNext())
             {
@@ -52,9 +52,16 @@ public class HuffmanAlgorithm {
 
                 for(int i = 0; i < inputArray.length; i++){
 
-
+                    int index = (inputArray[i] - 65);
+                    frequencyArray[index][1] += 1;
                 }
+            }
 
+            in.close();
+
+            for(int j = 0; j < frequencyArray.length; j++)
+            {
+                //ASSIGN TO FREQUENCY MAP
             }
         }
         catch(IOException e){
