@@ -1,10 +1,14 @@
+import HelperCode.BinaryStdIn;
+import HelperCode.BinaryStdOut;
+
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
 /**
  * @author Gerard Colman - 18327576
- * @author Lukasz Filanowski - LUKAS FILL IN STUDENT NUMBER!
+ * @author Lukasz Filanowski - 18414616
  * COMP20290 Assignment 2, Huffman Compression
  * This was completed as a team
  */
@@ -30,12 +34,49 @@ public class HuffmanAlgorithm {
             return this.frequency - node.frequency;
         }
     }
-    private SortedMap<Integer,Character> frequencyMap = new TreeMap<Integer, Character>();
+
+    SortedMap<Integer,Character> frequencyMap = new TreeMap<>();
+
+    public SortedMap<Integer, Character> createFrequencyTable(File file) throws FileNotFoundException {
+
+        try {
+            Scanner in = new Scanner(file);
+            String inputWord = "";
+
+            int[][] frequencyArray = new int[26][1];
+
+            while(in.hasNext())
+            {
+                inputWord = in.next();
+                char[] inputArray = inputWord.toCharArray();
+
+                for(int i = 0; i < inputArray.length; i++){
+
+
+                }
+
+            }
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+
+        return frequencyMap;
+    }
+
+    public String compressedInput(File file){  //Input for compressed file
+        String output = "";
+
+        return output;
+    }
+
+    //OUTPUT FUNCTION TAKE IN STRING RETURN NOTHING AND WRITE TO FILE
 
     public static void main(String[] args) {
         HuffmanAlgorithm Huffman = new HuffmanAlgorithm();
         //Huffman.encode(Huffman.createTree(), " ");
     }
+
     public void encode() {
         String input = BinaryStdIn.readString();
         char[] in = input.toCharArray();
