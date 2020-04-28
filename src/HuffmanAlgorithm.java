@@ -1,6 +1,3 @@
-import HelperCode.BinaryStdIn;
-import HelperCode.BinaryStdOut;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -8,7 +5,7 @@ import java.util.*;
 
 /**
  * @author Gerard Colman - 18327576
- * @author Lukasz Filanowski - 18414616
+ * @author Lukasz Filanowski - LUKAS FILL IN STUDENT NUMBER!
  * COMP20290 Assignment 2, Huffman Compression
  * This was completed as a team
  */
@@ -34,11 +31,12 @@ public class HuffmanAlgorithm {
             return this.frequency - node.frequency;
         }
     }
+    private SortedMap<Integer,Character> frequencyMap = new TreeMap<Integer, Character>();
+    public HuffmanAlgorithm(){
 
     SortedMap<Integer,Character> frequencyMap = new TreeMap<>();
 
     public SortedMap<Integer, Character> createFrequencyTable(File file) throws FileNotFoundException {
-
         try {
             Scanner in = new Scanner(file);
             String inputWord = "";
@@ -63,12 +61,12 @@ public class HuffmanAlgorithm {
             {
                 //ASSIGN TO FREQUENCY MAP
             }
+            return frequencyMap;
         }
         catch(IOException e){
             e.printStackTrace();
         }
 
-        return frequencyMap;
     }
 
     public String compressedInput(File file){  //Input for compressed file
@@ -84,15 +82,21 @@ public class HuffmanAlgorithm {
         //Huffman.encode(Huffman.createTree(), " ");
     }
 
-    public void encode() {
+    public void encode() { //Takes in name of output file
+        /*Getting File input*/
         String input = BinaryStdIn.readString();
         char[] in = input.toCharArray();
+        /*Getting Frequency Table*/
         //Get frequencys - Lukas
-        Node root = createTree(); //Build tree
-        String[] codewordTable = new String[256]; //Build Codeword table, 256 = size of extended ascii
+        /*Creating Encoding Tree*/
+        Node root = createTree();
+        /*Creating code word table*/
+        String[] codewordTable = new String[256];
         buildCodeTable(codewordTable,root,"");
+        /*Writing tree to file*/
         writeTree(root);
-        for(int i =0;i<input.length();i++){ //encoding input
+        /*Encoding*/
+        for(int i =0;i<input.length();i++){
             String code = codewordTable[in[i]]; //Gets code for letter
             for(int j = 0;j<code.length();j++){
                 if(code.charAt(j) == '0'){
@@ -104,6 +108,32 @@ public class HuffmanAlgorithm {
             }
         }
         BinaryStdOut.close();
+    }
+    public void decompress(){
+        Node root = readTreeFromFile();
+        int n = BinaryStdIn.readInt();
+        //Decoding
+        for(int i = 0;i<n;i++){
+            Node iter = root;
+            while(!iter.isLeaf()){
+                boolean nextBit = BinaryStdIn.readBoolean();
+                if(nextBit){
+                    iter = iter.rightChild;
+                }else{
+                    iter = iter.leftChild;
+                }
+            }
+            BinaryStdOut.write(iter.data,8);
+        }
+        BinaryStdOut.close();
+    }
+    private Node readTreeFromFile(){
+        boolean leafMeAlone = BinaryStdIn.readBoolean();
+        if(leafMeAlone){
+            return new Node(BinaryStdIn.readChar(),-1,null,null);
+        }else{
+            return new Node('\0',-1,readTreeFromFile(),readTreeFromFile());
+        }
     }
 
     /** Creates a huffman binary tree based on frequencyMap

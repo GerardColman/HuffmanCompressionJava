@@ -5,7 +5,7 @@
     - [ ] Encode (Takes in file)
         - [x] Build codeword table
         - [x] Write trie
-    - [ ] Decode
+    - [x] Decode
 - [ ] HuffmanAlgorithm class (Lukas)
     - [ ] Take file input from command line
     - [ ] Count character frequency in input file
