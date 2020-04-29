@@ -1,3 +1,6 @@
+import HelperCode.BinaryStdIn;
+import HelperCode.BinaryStdOut;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -35,6 +38,7 @@ public class HuffmanAlgorithm {
     public HuffmanAlgorithm(){ }
 
     public SortedMap<Integer, Character> createFrequencyTable(File file) throws FileNotFoundException {
+
         try {
             Scanner in = new Scanner(file);
             String inputWord = "";
@@ -44,13 +48,17 @@ public class HuffmanAlgorithm {
             while(in.hasNext())
             {
                 inputWord = in.next();
+
                 char[] inputArray = inputWord.toCharArray();
+                char[] spaceArray = in.next("\\s+").toCharArray();
 
                 for(int i = 0; i < inputArray.length; i++){
 
                     int index = (inputArray[i] - 65);
                     frequencyArray[index][1] += 1;
                 }
+
+                frequencyArray[26][1] = spaceArray.length;
             }
 
             in.close();
@@ -59,12 +67,12 @@ public class HuffmanAlgorithm {
             {
                 //ASSIGN TO FREQUENCY MAP
             }
-            return frequencyMap;
         }
         catch(IOException e){
             e.printStackTrace();
         }
 
+        return frequencyMap;
     }
 
     public String compressedInput(File file){  //Input for compressed file
