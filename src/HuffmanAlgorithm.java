@@ -58,14 +58,23 @@ public class HuffmanAlgorithm {
                     frequencyArray[index][1] += 1;
                 }
 
-                frequencyArray[26][1] = spaceArray.length;
+                frequencyArray[26][1] += spaceArray.length;
             }
 
             in.close();
 
             for(int j = 0; j < frequencyArray.length; j++)
             {
-                //ASSIGN TO FREQUENCY MAP
+                char character = (char) frequencyArray[j][0];
+
+                if(j == 26)
+                {
+                    character = ' ';
+                }
+
+                int frequency = frequencyArray[j][1];
+
+                frequencyMap.put(frequency, character);
             }
         }
         catch(IOException e){
