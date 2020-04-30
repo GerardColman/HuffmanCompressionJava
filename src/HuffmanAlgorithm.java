@@ -1,8 +1,5 @@
-import HelperCode.BinaryStdIn;
-import HelperCode.BinaryStdOut;
-
-import java.io.File;
-import java.io.FileNotFoundException;
+import javax.xml.crypto.Data;
+import java.io.*;
 import java.util.*;
 
 /**
@@ -12,6 +9,11 @@ import java.util.*;
  * This was completed as a team
  */
 public class HuffmanAlgorithm {
+    /* TODO LIST
+     * 1. Write Javadocs
+     * 2. Check this actually works
+     * 3. Do question 3 - Lukas
+     */
     public static class Node{
         private char data;
         private int frequency;
@@ -36,7 +38,7 @@ public class HuffmanAlgorithm {
     private SortedMap<Integer,Character> frequencyMap = new TreeMap<Integer, Character>();
     public HuffmanAlgorithm(){ }
 
-    public SortedMap<Integer, Character> createFrequencyTable(File file) throws FileNotFoundException {
+    public void createFrequencyTable(File file) throws FileNotFoundException {
 
         Scanner in = new Scanner(file);
         String inputWord = "";
@@ -79,9 +81,7 @@ public class HuffmanAlgorithm {
         catch(Exception e){
             e.printStackTrace();
         }
-
-        return frequencyMap;
-    }
+    } //DONE
 
     public String compressedInput(File file) throws FileNotFoundException {  //Input for compressed file
         String output = "";
@@ -99,68 +99,86 @@ public class HuffmanAlgorithm {
         }
 
         return output;
-    }
+    } //DONE
 
-    //OUTPUT FUNCTION TAKE IN STRING RETURN NOTHING AND WRITE TO FILE
 
     public static void main(String[] args) {
-        HuffmanAlgorithm Huffman = new HuffmanAlgorithm();
-        //Huffman.encode(Huffman.createTree(), " ");
+        HuffmanAlgorithm huffman = new HuffmanAlgorithm();
+        String inputFileName = "input.txt"; //Change this to change input file
+        huffman.encode(inputFileName);
     }
 
-    public void encode(){ //Takes in name of output file
-        /*Getting File input*/
-        String input = BinaryStdIn.readString();
-        char[] in = input.toCharArray();
-        /*Getting Frequency Table*/
-        //Get frequencys - Lukas
-        /*Creating Encoding Tree*/
-        Node root = createTree();
-        /*Creating code word table*/
-        String[] codewordTable = new String[256];
-        buildCodeTable(codewordTable,root,"");
-        /*Writing tree to file*/
-        writeTree(root);
-        /*Encoding*/
-        for(int i =0;i<input.length();i++){
-            String code = codewordTable[in[i]]; //Gets code for letter
-            for(int j = 0;j<code.length();j++){
-                if(code.charAt(j) == '0'){
-                    BinaryStdOut.write(false);
-                }
-                if(code.charAt(j) == '1'){
-                    BinaryStdOut.write(true);
+    public void encode(String inputFileName){ //Takes in name of output file
+        try{
+            File inputFile = new File(inputFileName);
+            Scanner scanner = new Scanner(inputFile);
+            /*Getting File input*/
+            StringBuilder input = new StringBuilder();
+            while(scanner.hasNext()){ //Gets entire file as string
+                input.append(scanner.next());
+            }
+            char[] in = input.toString().toCharArray();
+            /*Getting Frequency Table*/
+            createFrequencyTable(inputFile);
+            /*Creating Encoding Tree*/
+            Node root = createTree();
+            /*Creating code word table*/
+            String[] codewordTable = new String[256];
+            buildCodeTable(codewordTable,root,"");
+            /*Writing tree to file*/
+            writeTree(root);
+            /*Encoding*/
+
+            for(int i =0;i<input.length();i++){
+                String code = codewordTable[in[i]]; //Gets code for letter
+                for(int j = 0;j<code.length();j++){
+                    if(code.charAt(j) == '0'){
+                        BinaryStdOut.write(false);
+                    }
+                    if(code.charAt(j) == '1'){
+                        BinaryStdOut.write(true);
+                    }
                 }
             }
+            scanner.close();
+            BinaryStdOut.close();
+        }catch(Exception e){
+            e.printStackTrace();
         }
-        BinaryStdOut.close();
-    }
-    public void decompress(){
-        Node root = readTreeFromFile();
-        int n = BinaryStdIn.readInt();
-        //Decoding
-        for(int i = 0;i<n;i++){
-            Node iter = root;
-            while(!iter.isLeaf()){
-                boolean nextBit = BinaryStdIn.readBoolean();
-                if(nextBit){
-                    iter = iter.rightChild;
-                }else{
-                    iter = iter.leftChild;
+    } //DONE
+    public void decompress(String inputFileName){
+        try {
+            File inputFile = new File(inputFileName);
+            Scanner scanner = new Scanner(inputFile);
+            Node root = readTreeFromFile(scanner);
+            int n = scanner.nextInt();
+            //Decoding
+            for (int i = 0; i < n; i++) {
+                Node iter = root;
+                while (!iter.isLeaf()) {
+                    boolean nextBit = scanner.nextBoolean();
+                    if (nextBit) {
+                        iter = iter.rightChild;
+                    } else {
+                        iter = iter.leftChild;
+                    }
                 }
+                BinaryStdOut.write(iter.data, 8);
             }
-            BinaryStdOut.write(iter.data,8);
+            BinaryStdOut.close();
+            scanner.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        BinaryStdOut.close();
-    }
-    private Node readTreeFromFile(){
-        boolean leafMeAlone = BinaryStdIn.readBoolean();
+    } //DONE
+    private Node readTreeFromFile(Scanner scanner){
+        boolean leafMeAlone = scanner.nextBoolean();
         if(leafMeAlone){
-            return new Node(BinaryStdIn.readChar(),-1,null,null);
+            return new Node(scanner.next().charAt(0),-1,null,null);
         }else{
-            return new Node('\0',-1,readTreeFromFile(),readTreeFromFile());
+            return new Node('\0',-1,readTreeFromFile(scanner),readTreeFromFile(scanner));
         }
-    }
+    } //DONE
 
     /** Creates a huffman binary tree based on frequencyMap
      * @author Gerard Colman - 18327576
@@ -188,7 +206,7 @@ public class HuffmanAlgorithm {
             PQ.put(combinedFreq, parentNode);
         }
         return PQ.get(PQ.lastKey()); //Returns root of tree
-    }
+    } //DONE
     private void buildCodeTable(String[] st, Node node, String n){
         if(!node.isLeaf()){
             buildCodeTable(st,node.leftChild, n+'0');
@@ -196,8 +214,9 @@ public class HuffmanAlgorithm {
         }else{
             st[node.data] = n;
         }
-    }
-    private void writeTree(Node root){
+    } //DONE
+    private void writeTree(Node root) {
+        //Find alternate method of writing bits
         if(root.isLeaf()){ //Base Case
             BinaryStdOut.write(true);
             BinaryStdOut.write(root.data,8);
@@ -206,5 +225,5 @@ public class HuffmanAlgorithm {
         BinaryStdOut.write(false);
         writeTree(root.leftChild);
         writeTree(root.rightChild);
-    }
+    } //DONE
 }
