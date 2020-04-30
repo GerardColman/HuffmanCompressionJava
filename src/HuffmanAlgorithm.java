@@ -7,7 +7,7 @@ import java.util.*;
 
 /**
  * @author Gerard Colman - 18327576
- * @author Lukasz Filanowski - LUKAS FILL IN STUDENT NUMBER!
+ * @author Lukasz Filanowski - 18414616
  * COMP20290 Assignment 2, Huffman Compression
  * This was completed as a team
  */
