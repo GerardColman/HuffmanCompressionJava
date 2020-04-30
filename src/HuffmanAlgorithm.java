@@ -3,7 +3,6 @@ import HelperCode.BinaryStdOut;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.*;
 
 /**
@@ -39,10 +38,10 @@ public class HuffmanAlgorithm {
 
     public SortedMap<Integer, Character> createFrequencyTable(File file) throws FileNotFoundException {
 
-        try {
-            Scanner in = new Scanner(file);
-            String inputWord = "";
+        Scanner in = new Scanner(file);
+        String inputWord = "";
 
+        try {
             int[][] frequencyArray = new int[27][1];
 
             while(in.hasNext())
@@ -77,15 +76,27 @@ public class HuffmanAlgorithm {
                 frequencyMap.put(frequency, character);
             }
         }
-        catch(IOException e){
+        catch(Exception e){
             e.printStackTrace();
         }
 
         return frequencyMap;
     }
 
-    public String compressedInput(File file){  //Input for compressed file
+    public String compressedInput(File file) throws FileNotFoundException {  //Input for compressed file
         String output = "";
+        Scanner in = new Scanner(file);
+
+        try {
+            while(in.hasNext()){
+
+                output += in.nextLine();
+            }
+        }
+
+        catch(Exception e){
+            e.printStackTrace();
+        }
 
         return output;
     }
