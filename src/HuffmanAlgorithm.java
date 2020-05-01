@@ -49,17 +49,29 @@ public class HuffmanAlgorithm {
             while(in.hasNext())
             {
                 inputWord = in.next();
+                inputWord = inputWord.toLowerCase();
 
                 char[] inputArray = inputWord.toCharArray();
-                char[] spaceArray = in.next("\\s+").toCharArray();
-
+                char[] spaceArray = in.next().toCharArray();
+                // \\s+
                 for(int i = 0; i < inputArray.length; i++){
+                    int index = 0;
+                    if(inputArray[i] == 32){ //If input array contains a space
+                        index = 26;
+                    }else if(inputArray[i] >= 33 && inputArray[i] <= 64){ //Ignore punctuation symbols and numbers
+                        i++;
+                    }else if(inputArray[i] >= 65 && inputArray[i] <= 90){ //Handling capital letters
+                        index = (inputArray[i] - 65);
+                    }else if(inputArray[i] >= 123){ //Ignore misc symbols
+                        i++;
+                    }else{ //Handling lowercase letters
+                        index = (inputArray[i] - 97);
+                    }
 
-                    int index = (inputArray[i] - 65);
-                    frequencyArray[index][1] += 1;
+                    frequencyArray[index][0] += 1;
                 }
 
-                frequencyArray[26][1] += spaceArray.length;
+                frequencyArray[26][0] += spaceArray.length;
             }
 
             in.close();
