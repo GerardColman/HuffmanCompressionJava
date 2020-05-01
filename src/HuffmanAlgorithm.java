@@ -45,7 +45,7 @@ public class HuffmanAlgorithm {
     public HuffmanAlgorithm() {
     }
 
-    public void createFrequencyTable(File file) throws FileNotFoundException {
+    public int[][] createFrequencyTable(File file) throws FileNotFoundException {
 
         Scanner in = new Scanner(file);
         String inputWord = "";
@@ -54,7 +54,7 @@ public class HuffmanAlgorithm {
             int[][] frequencyArray = new int[27][1];
 
             while (in.hasNext()) {
-                inputWord = in.next();
+                inputWord = in.nextLine();
 
                 char[] inputArray = inputWord.toCharArray();
                 // \\s+
@@ -74,23 +74,12 @@ public class HuffmanAlgorithm {
                     frequencyArray[index][0] += 1;
                 }
             }
-
             in.close();
-
-            for (int j = 0; j < frequencyArray.length; j++) {
-                char character = (char) frequencyArray[j][0];
-
-                if (j == 26) {
-                    character = ' ';
-                }
-
-                int frequency = frequencyArray[j][0];
-
-                frequencyMap.put(frequency, character);
-            }
+            return frequencyArray;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     } //DONE
 
     public String compressedInput(File file) throws FileNotFoundException {  //Input for compressed file
@@ -128,7 +117,6 @@ public class HuffmanAlgorithm {
             char[] in = input.toString().toCharArray();
             /*Getting Frequency Table*/
             createFrequencyTable(inputFile);
-            System.out.println(frequencyMap.toString());
             /*Creating Encoding Tree*/
             Node root = createTree();
             printTree(root);
@@ -140,7 +128,6 @@ public class HuffmanAlgorithm {
             /*Encoding*/
 
             for (int i = 0; i < input.length(); i++) {
-                //System.out.println(Arrays.toString(codewordTable));
                 String code = codewordTable[in[i]]; //Gets code for letter
                 for (int j = 0; j < code.length(); j++) {
                     if (code.charAt(j) == '0') {
