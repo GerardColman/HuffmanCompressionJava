@@ -94,8 +94,7 @@ public class Huffman {
 
             writeTrie(root);
 
-            System.out.println("Uncompressed Size: " + countBytes(frequency)); //Printing uncompressed size
-            BinaryStdOut.write(countBytes(frequency));
+            BinaryStdOut.write(in.length); //Writing bytes in uncompressed file
 
             for (int i = 0; i < in.length; i++) {
                 String code = codeTable[in[i]]; //Gets code for letter
@@ -135,9 +134,9 @@ public class Huffman {
      * standard input; expands them; and writes the results to standard output.
      */
     public void decompress() {
-            Node root = readTrie();
+            Node root = readTrie(); //Reading in trie
 
-            int bytes = BinaryStdIn.readInt();
+            int bytes = BinaryStdIn.readInt(); //read in bytes
 
             for (int i = 0; i < bytes; i++) {
                 Node iter = root;
