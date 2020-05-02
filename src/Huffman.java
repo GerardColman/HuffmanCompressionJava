@@ -52,7 +52,6 @@ public class Huffman {
         }
     }
     public int[] createFrequencyTable(File file) {
-
         try {
             Scanner in = new Scanner(file);
             String inputWord = "";
@@ -135,12 +134,7 @@ public class Huffman {
      * Reads a sequence of bits that represents a Huffman-compressed message from
      * standard input; expands them; and writes the results to standard output.
      */
-    public void decompress(String fileName) {
-        try{
-            File input = new File(fileName);
-            Scanner scanner = new Scanner(input);
-            char[] in = getInput(scanner).toCharArray();
-
+    public void decompress() {
             Node root = readTrie();
 
             int bytes = BinaryStdIn.readInt();
@@ -148,7 +142,7 @@ public class Huffman {
             for (int i = 0; i < bytes; i++) {
                 Node iter = root;
                 while (!iter.isLeaf()) {
-                    boolean nextBit = scanner.nextBoolean();
+                    boolean nextBit = BinaryStdIn.readBoolean();
                     if (nextBit) {
                         iter = iter.right;
                     } else {
@@ -158,11 +152,6 @@ public class Huffman {
                 BinaryStdOut.write(iter.ch, 8);
             }
             BinaryStdOut.close();
-            scanner.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-
     }
 
     // build the Huffman trie given frequencies
@@ -238,7 +227,7 @@ public class Huffman {
             huffman.compress(args[1]);
         }
         if(args[0].equals("decompress")){
-            huffman.decompress(args[1]);
+            huffman.decompress();
         }
     }
 
